@@ -1,0 +1,66 @@
+// # Relations
+// parent <-> child
+
+// - self reference
+// - an employee has 0 or 1 manager
+// - a manager has 0 or many employees
+
+// - one to one
+// - an employee can have one address
+// - fk in child (NN, U)
+
+// - one to many(*)
+// - a department can have zero or many employees
+// - fk in child (NN)
+
+// - many(*) to many(*)
+// - an employee can be assigned to 0 or many projects
+// - a project can be assigned 0 or many employees
+// - create a join table (pk of both Entities) -> define @Mapping in child
+
+// # Entities 
+// - employee
+// - address
+// - department
+// - project
+// # DBML
+
+table employee {
+  id bigint [pk]
+  name varchar(255) [not null]
+  age bigint [note: '20 <= age <= 60']
+  email_id varchar(255) [unique, not null, note: 'match email pattern']
+  phone_number varchar(255) [unique, not null, note: 'pattern should be 10 digits']
+  salary bigint
+  joining_date date
+  gender varchar(50) [note: 'enum - male, female, others']
+  manager_id bigint [ref: > employee.id, note: 'self-reference: employee has 0 or 1 manager']
+  fk_dept_id bigint [ref: > department.id, note: '0 or many employees to one department']
+}
+
+table department {
+  id bigint [pk]
+  name varchar(255) [unique, not null]
+}
+
+table address {
+  id bigint [pk]
+  house_number bigint
+  street varchar(255)
+  city varchar(255)
+  state varchar(255)
+  zipcode bigint
+  fk_emp_id bigint [not null, unique, ref: > employee.id, note: 'one-to-one: each employee has one unique address']
+}
+
+table project {
+  id bigint [pk]
+  name varchar(255) [unique, not null]
+  project_start_date date
+  project_end_date date [note: 'should be greater than project_start_date']
+}
+
+table employee_project {
+  fk_emp_id bigint [pk, ref: > employee.id]
+  fk_project_id bigint [pk, ref: > project.id]
+}

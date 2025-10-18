@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: Employee Management
+  version: '1.0.0'
+  description: EMA API v1
+  contact:
+    name: Team Rohit
+    email: rohitkuna28@gmail.com
+servers:
+  - url: /ems-rs
+tags:
+  - name: Employee
+paths:
+  /employees:
+    get:
+      summary: get all employees
+      operationId: getAllEmployees
+      description: Returns the details of all employees
+      responses:
+        '200':
+          description: Employees found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeesResponse'
+  /employees/{id}:
+    get:
+      summary: Get employee by ID
+      description: Returns the details of a specific employee.
+      operationId: getEmployeeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Employee found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '404':
+          description: Employee not found
+  
+components:
+  schemas:
+    EmployeeResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        name:
+          type: string
+          example: "Rohit Kuna"
+        age:
+          type: integer
+          format: int64
+          min: 20
+          max: 60
+        dob:
+          type: string
+          format: date
+          example: "1990-05-15"
+        emailId:
+          type: string
+          format: email
+          example: "rohit.kuna@example.com"
+        phone:
+          type: integer
+          example: 9876543210
+        salary:
+          type: integer
+          format: int64
+          example: 75000
+        joiningDate:
+          type: string
+          format: date
+          example: "2020-01-10"
+        address:
+          $ref: '#/components/schemas/AddressResult'
+        department:
+          $ref: '#/components/schemas/DepartmentResult'
+    EmployeesResponse:
+      type: array
+      items: 
+        $ref: '#/components/schemas/EmployeeResult'
+    AddressResult:
+      type: object
+      properties:
+        houseNumber:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipcode:
+          type: string
+    DepartmentResult:
+      type: object
+      properties:
+        name:
+          type: string
+    EmployeeUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Rohit Kuna"
+        age:
+          type: integer
+          format: int64
+          min: 20
+          max: 60
+        dob:
+          type: string
+          format: date
+          example: "1990-05-15"
+        emailId:
+          type: string
+          format: email
+          example: "rohit.kuna@example.com"
+        phone:
+          type: integer
+          example: 9876543210
+        salary:
+          type: integer
+          format: int64
+          example: 75000
+        joiningDate:
+          type: string
+          format: date
+          example: "2020-01-10"
+        address:
+          $ref: '#/components/schemas/AddressResult'
+        department:
+          $ref: '#/components/schemas/DepartmentResult'
+        projects:
+          $ref: '#/components/schemas/ProjectResult'
+    ProjectResult:
+      type: object
+      properties:
+        name:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date

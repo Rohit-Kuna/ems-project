@@ -1,0 +1,1 @@
+docker volume rm -f docker-dev_postgres_data_vol
